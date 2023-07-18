@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>콜 상세</title>
+    <style>
+        table, th, td {
+            border: 0.2px solid black;
+        }
+    </style>
+</head>
+<body>
+<h1>콜 상세</h1>
+<table id="erTriageDetails">
+    <tbody>
+    <tr><th>콜 순서</th><td id="erTriageId"></td></tr>
+    <tr><th>분류자 이름</th><td id="classifierName"></td></tr>
+    <tr><th>응급도</th><td id="erRating"></td></tr>
+    <tr><th>환자 이름</th><td id="patientName"></td></tr>
+    <tr><th>성별</th><td id="gender"></td></tr>
+    <tr><th>분류시간</th><td id="sortingTime"></td></tr>
+    <tr><th>나이</th><td id="age"></td></tr>
+    <tr><th>주요 부상</th><td id="majorInjuryName"></td></tr>
+    <tr><th>혈압</th><td id="bloodPressure"></td></tr>
+    <tr><th>맥박</th><td id="pulse"></td></tr>
+    <tr><th>의식 상태</th><td id="consciousness"></td></tr>
+    <tr><th>걷기 가능 여부</th><td id="walkingCheck"></td></tr>
+    <tr><th>119 / 119 외</th><td id="ambulance"></td></tr>
+    </tbody>
+</table>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var erTriageId = location.pathname.split('/')[3]; // Adjust based on your url structure
+
+        $.get("/ertriage/" + erTriageId, function(data) {
+            $('#erTriageId').text(data.erTriageId);
+            $('#classifierName').text(data.classifierName);
+            $('#erRating').text(data.erRating);
+            $('#patientName').text(data.patientName);
+            $('#gender').text(data.gender === 1 ? '남자' : '여자');
+            $('#sortingTime').text(new Date(data.sortingTime).toISOString());
+            $('#age').text(data.age);
+            $('#majorInjuryName').text(data.majorInjuryName);
+            $('#bloodPressure').text(data.bloodPressure);
+            $('#pulse').text(data.pulse);
+            $('#consciousness').text(data.consciousness? '의식있음' : '의식없음 ');
+            $('#walkingCheck').text(data.walkingCheck ? '가능' : '불가능');
+            $('#ambulance').text(data.ambulance ? '119 외' : '119');
+        });
+    });
+</script>
+</html>

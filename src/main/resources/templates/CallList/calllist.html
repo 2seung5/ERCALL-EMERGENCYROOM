@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table, th, td {
+            border: 0.2px solid black;
+        }
+    </style>
+    <title>콜 리스트</title>
+</head>
+<body>
+<h1>콜 리스트 </h1>
+<table id="erTriageTable">
+    <thead>
+    <tr>
+        <th>콜 순서</th>
+        <th>응급도</th>
+        <th>분류시간</th>
+        <th>환자이름</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+        $(document).ready(function() {
+            $.get("/ertriage", function(data) {
+                data.forEach(function(erTriage) {
+                var sortingTime = new Date(erTriage.sortingTime);
+                    var row =
+                    $('#erTriageTable').append('<tr><td>' + erTriage.erTriageId
+                    + '</td><td>' + erTriage.erRating
+                    + '</td><td>' + sortingTime.toISOString()
+                    + '</td><td>' + erTriage.patientName
+                    + '</td></tr>');
+
+                    row.click(function() {
+                        window.location.href = '/ertriage/calllist/' + erTriage.erTriageId;
+                    });
+                    $('#erTriageTable').append(row);
+                });
+            });
+        });
+    </script>
+</html>
